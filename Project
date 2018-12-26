@@ -1,0 +1,116 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GameProject
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int size = GetSize();
+            int[,] matrix = new int[size, size];
+            GenerateRandomMatrix(size, matrix);
+            Players(matrix);
+
+            Console.ReadLine();
+            PrintMatrixNumber(matrix);
+            Console.ReadKey();
+        }
+       
+        private static void Players(int[,] matrix)
+        {
+            int WhichRow = 0;
+            int WhichColumn = 0;
+
+            do
+            {
+                Console.WriteLine("Please write a row number (zero based): ");
+                WhichRow = Convert.ToInt32(Console.ReadLine());
+
+                Console.WriteLine("Please write a column number (zero based):");
+                WhichColumn = Convert.ToInt32(Console.ReadLine());
+            }
+            while ((WhichRow < 0) && (WhichColumn < 0) && (WhichRow >= matrix.GetLength(0)) && WhichColumn >= matrix.GetLength(1));
+            Console.WriteLine($"The card here is: {matrix[WhichRow, WhichColumn]}");
+        }
+
+
+        private static void GenerateRandomMatrix(int size, int[,] matrix)
+        {
+            Random r = new Random();
+            int zugot = size * size / 2;
+            for (int i = 1; i <= zugot; i++)
+            {
+
+                int row, col;
+                do
+                {
+                    row = r.Next(0, size);
+                    col = r.Next(0, size);
+
+                }
+                while (matrix[row, col] != 0);
+                matrix[row, col] = i;
+
+                do
+                {
+                    row = r.Next(0, size);
+                    col = r.Next(0, size);
+                }
+                while (matrix[row, col] != 0);
+                matrix[row, col] = i;
+            }
+        }
+        private static int GetSize()
+        {
+
+
+            int size;
+            do
+            {
+                Console.WriteLine("Enter size:");
+                size = Convert.ToInt32(Console.ReadLine());
+            }
+            while (size <= 0 || size % 2 != 0 || size > 8);
+
+
+            return size;
+
+
+        }
+        private static void PrintMatrixNumber(int[,] matrix)
+        {
+
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    Console.Write($"{matrix[i, j],2}");
+                }
+                Console.WriteLine();
+
+            }
+            int row = 0;
+            int col = 0;
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    if (matrix[i, j] == 0)
+                        Console.Write($"{matrix[i, j]} ,");
+                    else if ((i == row) && (j == col))
+                        Console.Write($"{matrix[i, j]} ,");
+                    else
+                        Console.Write($"X ,");
+
+                }
+                Console.WriteLine();
+            }
+
+        }
+
+    }
+}
